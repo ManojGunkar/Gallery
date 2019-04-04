@@ -37,9 +37,6 @@ public class Result<T> {
         return mValue;
     }
 
-
-
-
     public static class Error {
         private int code;
         private String reason;
