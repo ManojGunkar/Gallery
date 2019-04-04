@@ -43,8 +43,8 @@ public class ApiConnector {
         @GET(PHOTOS_API_URL)
         Call<List<Photo>> getPhotos();
 
-        @GET(PHOTOS_API_URL+"{id}")
-        Call<Photo> getPhotoDetail(@Path(value = "id", encoded = true) String artistId);
+        @GET(PHOTOS_API_URL+"/{id}")
+        Call<Photo> getPhotoDetail(@Path(value = "id", encoded = true) String id);
 
 
 

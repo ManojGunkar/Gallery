@@ -1,6 +1,7 @@
 package com.test.fakegallery.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.test.fakegallery.R;
 import com.test.fakegallery.api.pojo.Photo;
+import com.test.fakegallery.app.DetailActivity;
 
 import java.util.List;
 
@@ -47,6 +49,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                 .centerCrop()
                 .into(viewHolder.imgLogo);
         viewHolder.txtTitle.setText(photo.getTitle());
+
+        viewHolder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra("id", String.valueOf(photo.getId()));
+            intent.putExtra("title", photo.getTitle());
+            mContext.startActivity(intent);
+        });
 
     }
 
