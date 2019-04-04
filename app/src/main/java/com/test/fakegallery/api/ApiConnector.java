@@ -1,5 +1,6 @@
 package com.test.fakegallery.api;
 
+import com.test.fakegallery.api.pojo.Album;
 import com.test.fakegallery.api.pojo.Photo;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by Manoj Kumar on 04-04-2019.
@@ -35,8 +37,16 @@ public class ApiConnector {
 
     public interface IClient {
 
+        @GET(ALBUMS_API_URL)
+        Call<List<Album>> getAlbums();
+
         @GET(PHOTOS_API_URL)
         Call<List<Photo>> getPhotos();
+
+        @GET(PHOTOS_API_URL+"{id}")
+        Call<Photo> getPhotoDetail(@Path(value = "id", encoded = true) String artistId);
+
+
 
     }
 }

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.test.fakegallery.api.ApiConnector;
+import com.test.fakegallery.api.pojo.Album;
 import com.test.fakegallery.api.pojo.Photo;
 
 import java.util.List;
@@ -30,6 +31,32 @@ public class ApiPresenter {
         return instance;
     }
 
+    public void getAlbums(final CompletionHandler<List<Album>> handler) {
+        mClient.getAlbums().enqueue(new Callback<List<Album>>() {
+            @Override
+            public void onResponse(Call<List<Album>> call, final Response<List<Album>> response) {
+                if (response.isSuccessful()) {
+                    mMainHandler.post(() -> {
+                        handler.onComplete(Result.success(response.body()));
+                    });
+                } else {
+                    mMainHandler.post(() -> {
+                        handler.onComplete(Result.error(response.code(), response.message()));
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Album>> call, Throwable t) {
+                mMainHandler.post(() -> {
+                    handler.onComplete(Result.error(-1, t.getMessage()));
+                });
+            }
+        });
+
+    }
+
     public void getPhotos(final CompletionHandler<List<Photo>> handler) {
         mClient.getPhotos().enqueue(new Callback<List<Photo>>() {
             @Override
@@ -54,6 +81,30 @@ public class ApiPresenter {
             }
         });
 
+    }
+
+    public void getPhotoDetail(String photoId,CompletionHandler<Photo> handler){
+        mClient.getPhotoDetail(photoId).enqueue(new Callback<Photo>() {
+            @Override
+            public void onResponse(Call<Photo> call, Response<Photo> response) {
+                if (response.isSuccessful()){
+                    mMainHandler.post(()->{
+                        handler.onComplete(Result.success(response.body()));
+                    });
+                }else {
+                    mMainHandler.post(() -> {
+                        handler.onComplete(Result.error(response.code(),response.message()));
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Photo> call, Throwable t) {
+                mMainHandler.post(()->{
+                   handler.onComplete(Result.error(-1,t.getMessage()));
+                });
+            }
+        });
     }
 
     public interface CompletionHandler<T> {
